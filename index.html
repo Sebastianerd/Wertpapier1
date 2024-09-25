@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aktienentwicklung</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 300px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Aktienentwicklung</h1>
+
+    <div id="inputContainer">
+        <label for="initialPrice">Initialer Aktienpreis (€)</label>
+        <input type="number" id="initialPrice" placeholder="z.B. 50"><br><br>
+
+        <label for="stockCount">Anzahl der Aktien</label>
+        <input type="number" id="stockCount" placeholder="z.B. 10"><br><br>
+
+        <label for="growthRate">Jährliche Wachstumsrate (%)</label>
+        <input type="number" id="growthRate" placeholder="z.B. 5"><br><br>
+
+        <label for="years">Laufzeit (Jahre)</label>
+        <input type="number" id="years" placeholder="z.B. 5"><br><br>
+
+        <button onclick="calculateGrowth()">Berechnen</button>
+    </div>
+
+    <h2>Entwicklung:</h2>
+    <table id="resultsTable">
+        <tr>
+            <th>Jahr</th>
+            <th>Wert der Aktien (€)</th>
+            <th>Depotkosten (€)</th>
+            <th>Nettowert des Depots (€)</th>
+        </tr>
+    </table>
+
+    <script>
+        function calculateGrowth() {
+            let initialPrice = parseFloat(document.getElementById('initialPrice').value);
+            let stockCount = parseInt(document.getElementById('stockCount').value);
+            let growthRate = parseFloat(document.getElementById('growthRate').value) / 100;
+            let years = parseInt(document.getElementById('years').value);
+
+            let table = document.getElementById('resultsTable');
+
+
+            table.innerHTML = `
+                <tr>
+                    <th>Jahr</th>
+                    <th>Wert der Aktien (€)</th>
+                    <th>Depotkosten (€)</th>
+                    <th>Nettowert des Depots (€)</th>
+                </tr>
+            `;
+
+            let currentValue = initialPrice * stockCount;
+            let depotCost = 50;  
+
+            for (let i = 1; i <= years; i++) {
+                currentValue = currentValue * (1 + growthRate);  
+
+                let nettoValue = currentValue - depotCost;  
+
+                
+                let row = table.insertRow();
+                row.insertCell(0).textContent = i;
+                row.insertCell(1).textContent = currentValue.toFixed(2);
+                row.insertCell(2).textContent = depotCost.toFixed(2);
+                row.insertCell(3).textContent = nettoValue.toFixed(2);
+            }
+        }
+    </script>
+
+</body>
+</html>
